@@ -1,41 +1,10 @@
 import { Box, Button, Text, TextField, Image } from '@skynexui/components'
 import React from 'react';
+import { useRouter } from 'next/router'
 import  appConfig  from '../config.json'
 
 
-function GlobalStyle() {
 
-    return (
-        <style global jsx>{`
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                list-style: none;
-            }
-            body {
-                font-family: "Roboto", sans-serif;
-            }
-            /* App fit Height */
-            html,
-            body,
-            #__next {
-                min-height: 100vh;
-                display: flex;
-                flex: 1;
-            }
-            #__next {
-                flex: 1;
-            }
-            #__next > * {
-                flex: 1;
-            }
-            /* ./App fit Height */
-    
-        `}</style>
-    )
-
-}
 
 function Title(props){
     const Tag = props.tag
@@ -59,28 +28,35 @@ function HomePage() {
     /* var inputUser = 'allan'; */
 
     let [userInput, setUserInput] = React.useState('allanviictor')
+    let router = useRouter()
 
     return (
         <>
-            <GlobalStyle />
 
             <Box styleSheet={{  display: 'flex', alignItems: 'center', justifyContent: 'center',
                 backgroundColor: appConfig.theme.colors.primary['500'],
                 backgroundImage: 'url(https://virtualbackgrounds.site/wp-content/uploads/2020/08/the-matrix-digital-rain.jpg)',
                 backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',}}>
 
-                <Box as="form" styleSheet={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    flexDirection: {
-                        xs: 'column',
-                        sm: 'row',
-                    },
-                    width: '100%', maxWidth: '700px',
-                    borderRadius: '5px', padding: '32px', margin: '16px',
-                    boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
-                    backgroundColor: appConfig.theme.colors.neutrals['700'],}}>
+                <Box as="form" 
+                    onSubmit={(event=> {
+                        event.preventDefault();
+                        router.push('/chat')
+                    })}
+                    styleSheet={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        flexDirection: {
+                            xs: 'column',
+                            sm: 'row',
+                        },
+                        width: '100%', maxWidth: '700px',
+                        borderRadius: '5px', padding: '32px', margin: '16px',
+                        boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
+                        backgroundColor: appConfig.theme.colors.neutrals['700']
+                    }}
+                >
 
                     <Box styleSheet={{ display: 'flex', 
                         flexDirection: 'column', 
@@ -93,20 +69,18 @@ function HomePage() {
                             {appConfig.name}
                         </Text>
 
-                        {/* <TextField fullWidth textFieldColors={{
-                            neutral: {
-                                textColor: appConfig.theme.colors.neutrals['200'],
-                                mainColor: appConfig.theme.colors.neutrals['900'],
-                                mainColorHighlight: appConfig.theme.colors.primary['500'],
-                                backgroundColor: appConfig.theme.colors.neutrals['800'],
-                            },
-                        }}/> */}
-
-                        <input 
+                        <TextField fullWidth value={userInput}
                             onChange={((event) =>{
                                 setUserInput(event.target.value)
                             })}
-                            value={userInput}
+                            textFieldColors={{
+                                neutral: {
+                                    textColor: appConfig.theme.colors.neutrals['200'],
+                                    mainColor: appConfig.theme.colors.neutrals['900'],
+                                    mainColorHighlight: appConfig.theme.colors.primary['500'],
+                                    backgroundColor: appConfig.theme.colors.neutrals['800'],
+                                },
+                            }}
                         />
 
                         <Button type='submit' label='Entrar' fullWidth
