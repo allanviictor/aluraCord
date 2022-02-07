@@ -28,7 +28,9 @@ function HomePage() {
     /* var inputUser = 'allan'; */
 
     let [userInput, setUserInput] = React.useState('allanviictor')
+    let [ buttonCursor, setButtonCursor ] = React.useState('pointer')
     let router = useRouter()
+    /* let disabledButton = 'pointer' */
 
     return (
         <>
@@ -72,6 +74,12 @@ function HomePage() {
                         <TextField fullWidth value={userInput}
                             onChange={((event) =>{
                                 setUserInput(event.target.value)
+
+                                if(event.target.value.length < 2 || event.target.value == ""){
+                                    setButtonCursor('not-allowed')
+                                }else {
+                                    setButtonCursor('pointer')
+                                }
                             })}
                             textFieldColors={{
                                 neutral: {
@@ -83,7 +91,7 @@ function HomePage() {
                             }}
                         />
 
-                        <Button type='submit' label='Entrar' fullWidth
+                        <Button  styleSheet={{ cursor: buttonCursor }} type='submit' label='Entrar' fullWidth
                             buttonColors={{
                                 contrastColor: appConfig.theme.colors.neutrals["000"],
                                 mainColor: appConfig.theme.colors.primary['500'],
@@ -105,14 +113,14 @@ function HomePage() {
                         minHeight: '240px',
                     }}>
 
-                        <Image src={`https://github.com/${userInput}.png`} styleSheet={{borderRadius: '50%', marginBottom: '16px',}} />
+                        <Image src={`https://github.com/${userInput.length < 2 ? '' : userInput}.png`} styleSheet={{borderRadius: '50%', marginBottom: '16px',}} />
                         
                         <Text variant="body4" styleSheet={{ color: appConfig.theme.colors.neutrals['200'],
                             backgroundColor: appConfig.theme.colors.neutrals['900'],
                             padding: '3px 10px',
                             borderRadius: '1000px'
                         }}>
-                            {userInput}
+                            {userInput.length < 2 ? '' : userInput}
                         </Text>
                     </Box>
                 </Box>
