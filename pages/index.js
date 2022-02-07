@@ -1,4 +1,5 @@
 import { Box, Button, Text, TextField, Image } from '@skynexui/components'
+import React from 'react';
 import  appConfig  from '../config.json'
 
 
@@ -55,6 +56,10 @@ function Title(props){
 
 
 function HomePage() {
+    /* var inputUser = 'allan'; */
+
+    let [userInput, setUserInput] = React.useState('allanviictor')
+
     return (
         <>
             <GlobalStyle />
@@ -64,7 +69,7 @@ function HomePage() {
                 backgroundImage: 'url(https://virtualbackgrounds.site/wp-content/uploads/2020/08/the-matrix-digital-rain.jpg)',
                 backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',}}>
 
-                <Box styleSheet={{
+                <Box as="form" styleSheet={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
@@ -88,14 +93,21 @@ function HomePage() {
                             {appConfig.name}
                         </Text>
 
-                        <TextField fullWidth textFieldColors={{
+                        {/* <TextField fullWidth textFieldColors={{
                             neutral: {
                                 textColor: appConfig.theme.colors.neutrals['200'],
                                 mainColor: appConfig.theme.colors.neutrals['900'],
                                 mainColorHighlight: appConfig.theme.colors.primary['500'],
                                 backgroundColor: appConfig.theme.colors.neutrals['800'],
                             },
-                        }}/>
+                        }}/> */}
+
+                        <input 
+                            onChange={((event) =>{
+                                setUserInput(event.target.value)
+                            })}
+                            value={userInput}
+                        />
 
                         <Button type='submit' label='Entrar' fullWidth
                             buttonColors={{
@@ -119,14 +131,14 @@ function HomePage() {
                         minHeight: '240px',
                     }}>
 
-                        <Image src={`https://github.com/allanviictor.png`} styleSheet={{borderRadius: '50%', marginBottom: '16px',}} />
+                        <Image src={`https://github.com/${userInput}.png`} styleSheet={{borderRadius: '50%', marginBottom: '16px',}} />
                         
                         <Text variant="body4" styleSheet={{ color: appConfig.theme.colors.neutrals['200'],
                             backgroundColor: appConfig.theme.colors.neutrals['900'],
                             padding: '3px 10px',
                             borderRadius: '1000px'
                         }}>
-                            allanviictor
+                            {userInput}
                         </Text>
                     </Box>
                 </Box>
