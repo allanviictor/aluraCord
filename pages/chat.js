@@ -1,9 +1,28 @@
 import { Box, Button, Text, TextField, Image } from '@skynexui/components'
+import { useState, FormEvent } from 'react'
 import appConfig from '../config.json'
-import { backgroundImage } from './assets/bg-dark.jpg'
 
 
 export default function ChatPage() {
+    const [textMensage, useTextMensage] = useState('')
+    const [mensageList, useMensageList] = useState([])
+
+    function sendMensage(event) {
+        if (event.key == "Enter") {
+            event.preventDefault()
+
+            let mensageData = {
+                id: mensageList.length + 1,
+                from: 'allanviictor',
+                to:"eduarda",
+                text: textMensage
+            }
+
+            useMensageList([mensageData,...mensageList ])
+            useTextMensage('')
+        }
+    }
+
     return (
         <Box
             styleSheet={{
@@ -41,8 +60,9 @@ export default function ChatPage() {
                         padding: '16px',
                     }}
                 >
-                    <MessageList  />
-                   
+                    <MessageList mensage={mensageList} />
+                    
+
                     <Box
                         as="form"
                         styleSheet={{
@@ -51,6 +71,9 @@ export default function ChatPage() {
                         }}
                     >
                         <TextField placeholder="Insira sua mensagem aqui..."
+                            onChange={(event) => { useTextMensage(event.target.value)}}
+                            value={textMensage}
+                            onKeyPress={(event) => sendMensage(event)}
                             type="textarea"
                             styleSheet={{
                                 width: '100%',
@@ -92,7 +115,7 @@ function Header() {
 }
 
 function MessageList(props) {
-    console.log(props);
+
     return (
         <Box
             tag="ul"
@@ -105,7 +128,54 @@ function MessageList(props) {
                 marginBottom: '16px',
             }}
         >
-            
+
+            {props.mensage.map((mensage) => {
+                return (
+                    <Text
+                        key={mensage.id}
+                        tag="li"
+                        styleSheet={{
+                            borderRadius: '5px',
+                            padding: '6px',
+                            marginBottom: '12px',
+                            hover: {
+                                backgroundColor: appConfig.theme.colors.neutrals[700],
+                            }
+                        }}
+                    >
+                        <Box
+                            styleSheet={{
+                                marginBottom: '8px',
+                            }}
+                        >
+                            <Image
+                                styleSheet={{
+                                    width: '20px',
+                                    height: '20px',
+                                    borderRadius: '50%',
+                                    display: 'inline-block',
+                                    marginRight: '8px',
+                                }}
+                                src={`https://github.com/${mensage.from}.png`}
+                            />
+                            <Text tag="strong">
+                                {mensage.from}
+                            </Text>
+                            <Text
+                                styleSheet={{
+                                    fontSize: '10px',
+                                    marginLeft: '8px',
+                                    color: appConfig.theme.colors.neutrals[300],
+                                }}
+                                tag="span"
+                            >
+                            </Text>
+                        </Box>
+                        {mensage.text}
+                    </Text>
+                );
+            })}
+
         </Box>
     )
 }
